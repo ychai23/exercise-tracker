@@ -6,60 +6,48 @@ import axios from 'axios';
 class LoginPage extends React.Component {
     constructor(props) {
       super(props);
+      this.state ={
+        username: '',
+        type: '',
+        distance: 0,
+        duration: 0,
+        calories: 0,
+        date: new Date(),
+      }
     }
+
     handleClick() {
-        // do something meaningful, Promises, if/else, whatever, and then
         window.location.assign('https://www.strava.com/oauth/authorize?client_id=51546&redirect_uri=http://localhost&response_type=code&scope=activity:read_all');
     }
 
-    getActivities() {
-        axios.get('https://www.strava.com/api/v3/athlete/activities?access_token=8ca50262bf679fb233545da396dcc105a89c9b84')
+    //reAuthorize and getActivities
+    async getActivities() {
+      var accessCode = "";
+      await axios.post('https://www.strava.com/oauth/token?client_id=51546&client_secret=8b783975113aadbf78c5662eed67ba8362eefdd7&refresh_token=8e54c6f057250c2d89be5fc93d735bbe64810d74&grant_type=refresh_token')
+        .then(response=>{
+          accessCode = response.data.access_token;
+        }).catch(function (error) {
+          console.log(error);
+        })
+      axios.get(`https://www.strava.com/api/v3/athlete/activities?access_token=${accessCode}`)
           .then(response => {
-            // this.setState({
-            //   username: response.data.username,
-            //   description: response.data.description,
-            //   duration: response.data.duration,
-            //   date: new Date(response.data.date)
-            // })   
+            this.setState({
+              username: response.data.username,
+              type: response.data.type,
+              distance: response.data.distance,
+              duration: response.data.moving_time,
+              calories: 0,
+              date: new Date(response.data.start_date)
+            })   
             console.log(response.data)
           })
           .catch(function (error) {
             console.log(error);
           })
-    
-        // axios.get('http://localhost:5000/users/')
-        //   .then(response => {
-        //     if (response.data.length > 0) {
-        //       this.setState({
-        //         users: response.data.map(user => user.username),
-        //       })
-        //     }
-        //   })
-        //   .catch((error) => {
-        //     console.log(error);
-        //   })
-    
       }
 
 
-    // reAuthorize(){
-    //     const auth_link = "https://www.strava.com/oauth/token"
-    //     fetch(auth_link,{
-    //         method: 'post',
-    //         headers: {
-    //             'Accept': 'application/json, text/plain, */*',
-    //             'Content-Type': 'application/json'
-    //         },
 
-    //         body: JSON.stringify({
-    //             client_id: '51546',
-    //             client_secret: '8b783975113aadbf78c5662eed67ba8362eefdd7',
-    //             refresh_token: "8e54c6f057250c2d89be5fc93d735bbe64810d74",
-    //             grant_type: 'refresh_token'
-    //         })
-    //     })
-    //     .then(res => getActivites(res))
-    // }
 
     render(){
         return(

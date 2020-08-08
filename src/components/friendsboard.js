@@ -1,4 +1,5 @@
 import React from "react";
+import Table from '@material-ui/core/Table';
 
 class Leaderboard extends React.Component {
     constructor(props) {

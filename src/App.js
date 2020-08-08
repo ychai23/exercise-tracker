@@ -10,6 +10,8 @@ import CreateExercise from "./components/create-exercise.component.js";
 import CreateUser from "./components/create-user.component";
 import Leaderboard from "./components/friendsboard";
 import LoginPage from "./components/login";
+import testboard from "./components/testboard";
+import map from "./components/map";
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
       <Route path="/user" component={CreateUser} />
       <Route path="/friendsboard" component={Leaderboard} />
       <Route path="/login" component={LoginPage} />
+      <Route path="/testboard" component={testboard} />
+      <Route path="/map" component={map} />
       </div>
     </Router>
   );
