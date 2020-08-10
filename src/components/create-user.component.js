@@ -26,10 +26,22 @@ export default class CreateUser extends Component {
       username: this.state.username
     }
 
+    axios.get('http://localhost:5000/users/')
+        .then(response => {
+          for (var i in response.data.length){
+            if(response.data[i].includes(this.state.username)){
+              console.log("User existed");
+              break;
+            }
+          }
+              axios.post('http://localhost:5000/users/add', user)
+        .then(res => console.log(res.data));
+        });
+
     console.log(user);
 
-    axios.post('http://localhost:5000/users/add', user)
-      .then(res => console.log(res.data));
+    // axios.post('http://localhost:5000/users/add', user)
+    //   .then(res => console.log(res.data));
 
     this.setState({
       username: ''
