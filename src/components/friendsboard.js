@@ -29,7 +29,7 @@ class Leaderboard extends React.Component {
     render(){
         return(
             <div>
-                <h3>Leading Board</h3>
+                <h3>Friends Leading Board</h3>
                 <table className="table">
                     <thead className="thead-light">
                         <tr>

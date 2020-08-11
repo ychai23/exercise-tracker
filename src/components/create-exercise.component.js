@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import Select from '@material-ui/core/Button';
+import MenuItem from '@material-ui/core/MenuItem';
 
 export default class CreateExercise extends Component {
   constructor(props) {
     super(props);
 
     this.onChangeUsername = this.onChangeUsername.bind(this);
+    this.onChangeDistance = this.onChangeDistance.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onChangeDuration = this.onChangeDuration.bind(this);
     this.onChangeDate = this.onChangeDate.bind(this);
@@ -17,8 +20,10 @@ export default class CreateExercise extends Component {
       username: '',
       description: '',
       duration: 0,
+      distance: 0,
       date: new Date(),
-      users: []
+      users: [],
+      types: ["Run","Swimming","Biking"]
     }
   }
 
@@ -36,6 +41,12 @@ export default class CreateExercise extends Component {
         console.log(error);
       })
 
+  }
+
+  onChangeDistance(e) {
+    this.setState({
+      distance: e.target.value
+    })
   }
 
   onChangeUsername(e) {
@@ -68,16 +79,17 @@ export default class CreateExercise extends Component {
     const exercise = {
       username: this.state.username,
       description: this.state.description,
+      distance: this.state.distance,
       duration: this.state.duration,
       date: this.state.date
     }
-
+    console.log(this.state.description);
     console.log(exercise);
 
     axios.post('http://localhost:5000/exercises/add', exercise)
       .then(res => console.log(res.data));
 
-    window.location = '/';
+    // window.location = '/';
   }
 
   render() {
@@ -104,11 +116,35 @@ export default class CreateExercise extends Component {
         </div>
         <div className="form-group"> 
           <label>Description: </label>
-          <input  type="text"
+          <select ref="userInput"
+              required
+              className="form-control"
+              value={this.state.description}
+              onChange={this.onChangeDescription}>
+              {
+                this.state.types.map(function(description) {
+                  return <option 
+                    key={description}
+                    value={description}>{description}
+                    </option>;
+                })
+              }
+          </select>
+
+          {/* <input  type="text"
               required
               className="form-control"
               value={this.state.description}
               onChange={this.onChangeDescription}
+              /> */}
+        </div>
+        <div className="form-group">
+          <label>Distance (in miles): </label>
+          <input 
+              type="text" 
+              className="form-control"
+              value={this.state.distance}
+              onChange={this.onChangeDistance}
               />
         </div>
         <div className="form-group">

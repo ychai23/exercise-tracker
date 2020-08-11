@@ -8,6 +8,7 @@ export default class EditExercise extends Component {
     super(props);
 
     this.onChangeUsername = this.onChangeUsername.bind(this);
+    this.onChangeDistance = this.onChangeDistance.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onChangeDuration = this.onChangeDuration.bind(this);
     this.onChangeDate = this.onChangeDate.bind(this);
@@ -17,6 +18,7 @@ export default class EditExercise extends Component {
       username: '',
       description: '',
       duration: 0,
+      distance: 0,
       date: new Date(),
       users: []
     }
@@ -28,6 +30,7 @@ export default class EditExercise extends Component {
         this.setState({
           username: response.data.username,
           description: response.data.description,
+          distance: response.data.distance,
           duration: response.data.duration,
           date: new Date(response.data.date)
         })   
@@ -62,6 +65,12 @@ export default class EditExercise extends Component {
     })
   }
 
+  onChangeDistance(e) {
+    this.setState({
+      distance: e.target.value
+    })
+  }
+
   onChangeDuration(e) {
     this.setState({
       duration: e.target.value
@@ -80,6 +89,7 @@ export default class EditExercise extends Component {
     const exercise = {
       username: this.state.username,
       description: this.state.description,
+      distance: this.state.distance,
       duration: this.state.duration,
       date: this.state.date
     }
@@ -121,6 +131,15 @@ export default class EditExercise extends Component {
               className="form-control"
               value={this.state.description}
               onChange={this.onChangeDescription}
+              />
+        </div>
+        <div className="form-group">
+          <label>Distance (in miles): </label>
+          <input 
+              type="text" 
+              className="form-control"
+              value={this.state.distance}
+              onChange={this.onChangeDistance}
               />
         </div>
         <div className="form-group">

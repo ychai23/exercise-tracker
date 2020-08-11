@@ -6,6 +6,7 @@ const Exercise = props => (
   <tr>
     <td>{props.exercise.username}</td>
     <td>{props.exercise.description}</td>
+    <td>{props.exercise.distance}</td>
     <td>{props.exercise.duration}</td>
     <td>{props.exercise.date.substring(0,10)}</td>
     <td>
@@ -57,6 +58,7 @@ export default class ExercisesList extends Component {
             <tr>
               <th>Username</th>
               <th>Description</th>
+              <th>Distance</th>
               <th>Duration</th>
               <th>Date</th>
               <th>Actions</th>
