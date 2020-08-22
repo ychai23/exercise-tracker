@@ -3,7 +3,7 @@ import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Route} from "react-router-dom";
 
-import Navbar from "./components/navbar.component"
+import Navbarr from "./components/navbar.component"
 import frontPage from "./components/frontPage";
 import ExercisesList from "./components/exercise-list.component";
 import EditExercise from "./components/edit-exercise.component";
@@ -18,9 +18,10 @@ function App() {
   return (
     <Router>
       <div className="container">
-      <Navbar />
+      <Navbarr />
       <br/>
-      <Route path="/" exact component={ExercisesList} />
+      <Route path="/" exact component={frontPage} />
+      <Route path="/admin" exact component={ExercisesList} />
       <Route path="/edit/:id" component={EditExercise} />
       <Route path="/create" component={CreateExercise} />
       <Route path="/user" component={CreateUser} />
@@ -28,6 +29,7 @@ function App() {
       <Route path="/login" component={LoginPage} />
       <Route path="/testboard" component={testboard} />
       <Route path="/map" component={map} />
+
       </div>
     </Router>
   );

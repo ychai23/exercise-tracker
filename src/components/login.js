@@ -32,7 +32,48 @@ class LoginPage extends React.Component {
     }
 
     handleClick() {
-        window.location.assign('https://www.strava.com/oauth/authorize?client_id=51546&redirect_uri=http://localhost&response_type=code&scope=activity:read_all');
+        window.location.assign('https://www.strava.com/oauth/authorize?client_id=51546&redirect_uri=http://localhost:3000/login&response_type=code&scope=activity:read_all');
+    }
+
+    getParams() {
+      var params = {};
+      var parser = document.createElement('a');
+      parser.href = window.location.href;
+      var query = parser.search.substring(1);
+      var vars = query.split('&');
+      for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        params[pair[0]] = decodeURIComponent(pair[1]);
+      }
+      console.log(params['code']);
+      return params['code'];
+    };
+
+    //reAuthorize and getActivities
+    async getUserInfo() {
+      var code = this.getParams();
+      var accessCode = "";
+      await axios.post(`https://www.strava.com/oauth/token?client_id=51546&client_secret=8b783975113aadbf78c5662eed67ba8362eefdd7&code=${code}&grant_type=authorization_code`)
+        .then(response=>{
+          accessCode = response.data.access_token;
+        }).catch(function (error) {
+          console.log(error);
+        })
+        axios.get(`https://www.strava.com/api/v3/athlete/activities?access_token=${accessCode}`)
+          .then(response => {
+            console.log(response.data[0])
+            this.setState({
+              username: response.data[0].athlete.id,
+              type: response.data[0].type,
+              distance: response.data[0].distance,
+              duration: response.data[0].moving_time,
+              calories: 0,
+              date: new Date(response.data[0].start_date)
+            })   
+          })
+          .catch(function (error) {
+            console.log(error);
+          })
     }
 
     //reAuthorize and getActivities
@@ -80,6 +121,7 @@ class LoginPage extends React.Component {
         const exercise = {
           username: this.state.username,
           description: this.state.type,
+          distance: this.state.distance,
           duration: this.state.duration,
           date: this.state.date
         }
@@ -89,7 +131,7 @@ class LoginPage extends React.Component {
         axios.post('http://localhost:5000/exercises/add', exercise)
           .then(res => console.log(res.data));
 
-        window.location = '/';
+        
       }
 
 
@@ -102,16 +144,16 @@ class LoginPage extends React.Component {
                         variant="primary">Login with Strava
                     </Button>{' '}
                     <Button
-                        onClick={this.getActivities.bind(this)} 
-                        variant="primary">Get Data
-                    </Button>{' '}
-                    <Button
                         onClick={this.onUserSubmit.bind(this)} 
                         variant="primary">Create Account
                     </Button>{' '}
                     <Button
                         onClick={this.onSubmit.bind(this)} 
                         variant="primary">Sumbit Exercise
+                    </Button>{' '}
+                    <Button
+                        onClick={this.getUserInfo.bind(this)} 
+                        variant="primary">getUserData
                     </Button>
         </div>
         );
