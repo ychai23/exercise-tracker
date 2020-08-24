@@ -13,6 +13,7 @@ class LoginPage extends React.Component {
         duration: 0,
         calories: 0,
         date: new Date(),
+        activity: null,
       }
     }
     componentDidMount() {
@@ -35,6 +36,7 @@ class LoginPage extends React.Component {
         window.location.assign('https://www.strava.com/oauth/authorize?client_id=51546&redirect_uri=http://localhost:3000/login&response_type=code&scope=activity:read_all');
     }
 
+    //parameterize url
     getParams() {
       var params = {};
       var parser = document.createElement('a');
@@ -49,27 +51,35 @@ class LoginPage extends React.Component {
       return params['code'];
     };
 
-    //reAuthorize and getActivities
+    //reAuthorize and getActivities from users
     async getUserInfo() {
       var code = this.getParams();
       var accessCode = "";
+      var refreshCode = "";
+      var activities = [];
       await axios.post(`https://www.strava.com/oauth/token?client_id=51546&client_secret=8b783975113aadbf78c5662eed67ba8362eefdd7&code=${code}&grant_type=authorization_code`)
         .then(response=>{
           accessCode = response.data.access_token;
+          refreshCode = response.data.refresh_token;
         }).catch(function (error) {
           console.log(error);
         })
         axios.get(`https://www.strava.com/api/v3/athlete/activities?access_token=${accessCode}`)
           .then(response => {
-            console.log(response.data[0])
+            for (var i = 0; i < response.data.length; i++){
+              var username = response.data[i].athlete.id;
+              var type = response.data[i].type;
+              var distance = response.data[i].distance;
+              var duration = response.data[i].moving_time;
+              var calories = 0;
+              var date = new Date(response.data[i].start_date);
+              var activity = {username: username, type: type, distance: distance, duration: duration, calories: calories, date: date};
+              activities.push(activity);
+            }
             this.setState({
-              username: response.data[0].athlete.id,
-              type: response.data[0].type,
-              distance: response.data[0].distance,
-              duration: response.data[0].moving_time,
-              calories: 0,
-              date: new Date(response.data[0].start_date)
-            })   
+              // activity: activities,
+            })
+            console.log(this.activity);   
           })
           .catch(function (error) {
             console.log(error);

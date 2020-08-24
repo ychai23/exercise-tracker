@@ -12,7 +12,7 @@ class frontPage extends React.Component {
     render(){
         return(
             <div>
-                <h3 class="text-center">Welcome to ExcerTracker</h3>
+                <h3 className="text-center">Welcome to ExcerTracker</h3>
                 <img src={runman}  className="mx-auto d-block max-width: 50%" alt="runman" sizes="(min-width: 36em) 33.3vw, 100vw" />
             </div>
         )

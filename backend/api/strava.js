@@ -1,3 +1,4 @@
+//the original inspiration and masterpiece
 const auth_link = "https://www.strava.com/oauth/token"
 
 function getActivites(res){

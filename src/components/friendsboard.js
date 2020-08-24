@@ -66,7 +66,7 @@ class Leaderboard extends React.Component {
     render(){
         return(
             <div>
-                <h3>Friends Leading Board</h3>
+                <h3 class="pb-5">Friends Leading Board</h3>
                 <h4>Running Leading Board</h4>
                 <table className="table">
                     <thead className="thead-light">
@@ -82,7 +82,7 @@ class Leaderboard extends React.Component {
                         {this.state.usersDataT
                         .filter(user => (user.type == 'Run' && user.date.getTime() == this.state.current.getTime()))
                         .sort(function(a, b) {
-                            return a.distance - b.distance;
+                            return b.distance - a.distance;
                         })
                         .map( user => {
                             return (
@@ -113,7 +113,7 @@ class Leaderboard extends React.Component {
                         {this.state.usersDataT
                         .filter(user => (user.type == 'Biking' && user.date.getTime() == this.state.current.getTime()))
                         .sort(function(a, b) {
-                            return a.distance - b.distance;
+                            return b.distance - a.distance;
                         })
                         .map( user => {
                             return (
@@ -144,7 +144,7 @@ class Leaderboard extends React.Component {
                         {this.state.usersDataT
                         .filter(user => (user.type == 'Swimming' && user.date.getTime() == this.state.current.getTime()))
                         .sort(function(a, b) {
-                            return a.distance - b.distance;
+                            return b.distance - a.distance;
                         })
                         .map( user => {
                             return (
