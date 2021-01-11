@@ -49,11 +49,12 @@ class LoginPage extends React.Component {
       }
       console.log(params['code']);
       return params['code'];
-    };
+    }
 
     //reAuthorize and getActivities from users
     async getUserInfo() {
       var code = this.getParams();
+      console.log(code);
       var accessCode = "";
       var refreshCode = "";
       var activities = [];

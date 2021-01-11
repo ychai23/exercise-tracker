@@ -9,7 +9,8 @@ export default class CreateUser extends Component {
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
-      username: ''
+      username: '',
+      password: ''
     }
   }
 
@@ -18,18 +19,23 @@ export default class CreateUser extends Component {
       username: e.target.value
     })
   }
+  onChangePW(e) {
+    this.setState({
+      password: e.target.value
+    })
+  }
 
   onSubmit(e) {
     e.preventDefault();
 
     const user = {
-      username: this.state.username
+      username: this.state.username,
+      password: this.state.password
     }
     var check = false;
 
     axios.get('http://localhost:5000/users/')
         .then(response => {
-          console.log(this.state.username);
           for (var i=0; i<response.data.length; i++){
             if(response.data[i].username == user.username){
               check = true;
@@ -65,6 +71,15 @@ export default class CreateUser extends Component {
                 className="form-control"
                 value={this.state.username}
                 onChange={this.onChangeUsername}
+                />
+          </div>
+          <div className="form-group"> 
+            <label>Password: </label>
+            <input  type="text"
+                required
+                className="form-control"
+                value={this.state.password}
+                onChange={this.onChangePW}
                 />
           </div>
           <div className="form-group">
