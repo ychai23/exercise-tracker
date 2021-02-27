@@ -8,7 +8,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bootstrap": "^4.5.1",
     "google-maps-react": "^2.0.6",
     "mongoose": "^5.9.19",
@@ -41,5 +41,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "css-loader": "^5.1.0",
+    "moment": "^2.29.1",
+    "react-big-calendar": "^0.32.0",
+    "style-loader": "^2.0.0",
+    "superagent": "^6.1.0"
   }
 }
